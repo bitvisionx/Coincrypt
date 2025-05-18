@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CrypVisionX</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <img src="smiley.png" alt="CrypVisionX Logo" class="logo" />
+    <h1>CrypVisionX</h1>
+
+    <label for="cryptoSelect">Kies een crypto:</label>
+    <select id="cryptoSelect">
+      <option value="BTC">Bitcoin (BTC)</option>
+      <option value="ETH">Ethereum (ETH)</option>
+      <option value="BNB">Binance Coin (BNB)</option>
+      <option value="ADA">Cardano (ADA)</option>
+      <option value="SOL">Solana (SOL)</option>
+      <option value="XRP">XRP</option>
+      <option value="DOT">Polkadot (DOT)</option>
+      <option value="LTC">Litecoin (LTC)</option>
+      <option value="DOGE">Dogecoin (DOGE)</option>
+    </select>
+
+    <button onclick="predict()">Voorspel komende 6 uur</button>
+    <p id="result">Wacht op een voorspelling...</p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
