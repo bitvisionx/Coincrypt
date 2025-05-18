@@ -12,9 +12,47 @@ body {
   margin: 0 auto;
 }
 
-.logo {
+.logo.smiley {
   width: 100px;
-  margin-bottom: 20px;
+  height: 100px;
+  margin: 0 auto 20px;
+  background: yellow;
+  border-radius: 50%;
+  position: relative;
+  box-shadow: 0 0 10px 2px gold;
+}
+
+/* Ogen */
+.logo.smiley::before,
+.logo.smiley::after {
+  content: '';
+  position: absolute;
+  top: 30px;
+  width: 15px;
+  height: 15px;
+  background: black;
+  border-radius: 50%;
+}
+
+.logo.smiley::before {
+  left: 25px;
+}
+
+.logo.smiley::after {
+  right: 25px;
+}
+
+/* Mond */
+.logo.smiley .mouth {
+  position: absolute;
+  bottom: 25px;
+  left: 50%;
+  width: 60px;
+  height: 30px;
+  border: 5px solid black;
+  border-top: none;
+  border-radius: 0 0 50px 50px;
+  transform: translateX(-50%);
 }
 
 select, button {
