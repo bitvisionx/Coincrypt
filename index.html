@@ -1,43 +1,28 @@
 <!DOCTYPE html>
-<html lang="nl">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CrypVisionX</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
 </head>
 <body>
   <div class="container">
-    <div class="logo smiley">
-      <div class="mouth"></div>
-    </div>
+    <img src="smiley.png" alt="CrypVisionX Logo" class="logo" />
     <h1>CrypVisionX</h1>
 
     <label for="cryptoSelect">Kies een crypto:</label>
-    <select id="cryptoSelect">
-      <option value="BTC">Bitcoin (BTC)</option>
-      <option value="ETH">Ethereum (ETH)</option>
-      <option value="BNB">Binance Coin (BNB)</option>
-      <option value="ADA">Cardano (ADA)</option>
-      <option value="SOL">Solana (SOL)</option>
-      <option value="XRP">XRP</option>
-      <option value="DOT">Polkadot (DOT)</option>
-      <option value="LTC">Litecoin (LTC)</option>
-      <option value="DOGE">Dogecoin (DOGE)</option>
-      <option value="LPT">Livepeer (LPT)</option>
-    </select>
+    <select id="cryptoSelect"></select>
 
-    <label for="timeframeSelect">Kies tijdsframe:</label>
-    <select id="timeframeSelect">
-      <option value="1">1 uur</option>
-      <option value="6" selected>6 uur</option>
-      <option value="24">24 uur</option>
-    </select>
+    <h2>Actuele prijs: <span id="livePrice">€...</span></h2>
+    <h2>Verwachte verandering: <span id="changeEstimate">€...</span></h2>
 
-    <button onclick="predict()">Voorspel</button>
-
-    <p id="price">Huidige prijs: ...</p>
-    <p id="result">Wacht op een voorspelling...</p>
+    <div id="predictions">
+      <p><strong>1 uur:</strong> <span id="pred1h">...</span></p>
+      <p><strong>6 uur:</strong> <span id="pred6h">...</span></p>
+      <p><strong>24 uur:</strong> <span id="pred24h">...</span></p>
+    </div>
   </div>
 
   <script src="script.js"></script>
