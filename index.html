@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -24,9 +24,19 @@
       <option value="DOT">Polkadot (DOT)</option>
       <option value="LTC">Litecoin (LTC)</option>
       <option value="DOGE">Dogecoin (DOGE)</option>
+      <option value="LPT">Livepeer (LPT)</option>
     </select>
 
-    <button onclick="predict()">Voorspel komende 6 uur</button>
+    <label for="timeframeSelect">Kies tijdsframe:</label>
+    <select id="timeframeSelect">
+      <option value="1">1 uur</option>
+      <option value="6" selected>6 uur</option>
+      <option value="24">24 uur</option>
+    </select>
+
+    <button onclick="predict()">Voorspel</button>
+
+    <p id="price">Huidige prijs: ...</p>
     <p id="result">Wacht op een voorspelling...</p>
   </div>
 
