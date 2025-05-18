@@ -1,55 +1,67 @@
-async function predict() {
-  const crypto = document.getElementById("cryptoSelect").value;
-  const timeframe = parseInt(document.getElementById("timeframeSelect").value);
-  const result = document.getElementById("result");
-  const priceDisplay = document.getElementById("price");
+const API_URL = "https://api.bitvavo.com/v2/markets";
+let coins = [];
 
+async function fetchCoins() {
   try {
-    // Fetch current price in EUR using CoinGecko API
-    const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${getCoinGeckoId(crypto)}&vs_currencies=eur`);
-    const data = await response.json();
-    const price = data[getCoinGeckoId(crypto)].eur;
+    const res = await fetch(API_URL);
+    const data = await res.json();
 
-    priceDisplay.textContent = `Huidige prijs: €${price.toFixed(2)}`;
+    coins = data
+      .filter(m => m.market.endsWith("-EUR"))
+      .map(m => m.market.replace("-EUR", "").toUpperCase())
+      .sort();
 
-    // Simulate prediction
-    const outcomes = ["stijging 📈", "daling 📉", "stabiel 🤝"];
-    const prediction = outcomes[Math.floor(Math.random() * outcomes.length)];
+    if (!coins.includes("LPT")) coins.push("LPT"); // Voeg Livepeer toe
 
-    // Estimate price change
-    let change = 0;
-    switch (prediction) {
-      case "stijging 📈":
-        change = price * (Math.random() * 0.05 + 0.01); // +1% to +6%
-        break;
-      case "daling 📉":
-        change = -price * (Math.random() * 0.05 + 0.01); // -1% to -6%
-        break;
-      case "stabiel 🤝":
-        change = 0;
-        break;
-    }
-
-    const estimatedPrice = price + change;
-    result.textContent = `Voorspelling voor ${crypto} over ${timeframe} uur: ${prediction} (geschatte prijs: €${estimatedPrice.toFixed(2)})`;
-  } catch (error) {
-    console.error("Fout bij het ophalen van de prijs:", error);
-    result.textContent = "Er is een fout opgetreden bij het ophalen van de prijs.";
+    renderSelect();
+  } catch (e) {
+    console.error("Fout bij ophalen coins:", e);
+    document.getElementById("livePrice").textContent = "Fout bij laden";
   }
 }
 
-function getCoinGeckoId(symbol) {
-  const mapping = {
-    BTC: "bitcoin",
-    ETH: "ethereum",
-    BNB: "binancecoin",
-    ADA: "cardano",
-    SOL: "solana",
-    XRP: "ripple",
-    DOT: "polkadot",
-    LTC: "litecoin",
-    DOGE: "dogecoin",
-    LPT: "livepeer"
-  };
-  return mapping[symbol];
+function renderSelect() {
+  const select = document.getElementById("cryptoSelect");
+  select.innerHTML = coins.map(coin => `<option value="${coin}">${coin}</option>`).join("");
+
+  select.addEventListener("change", () => updatePrediction(select.value));
+  updatePrediction(select.value);
 }
+
+async function updatePrediction(coin) {
+  const priceEl = document.getElementById("livePrice");
+  const changeEl = document.getElementById("changeEstimate");
+
+  try {
+    const res = await fetch(`https://api.bitvavo.com/v2/ticker/price?market=${coin}-EUR`);
+    const data = await res.json();
+    const price = parseFloat(data.price);
+    priceEl.textContent = `€${price.toFixed(2)}`;
+
+    const estimates = {
+      "1h": generatePrediction(price),
+      "6h": generatePrediction(price),
+      "24h": generatePrediction(price)
+    };
+
+    changeEl.textContent = `± €${(estimates["6h"].delta).toFixed(2)}`;
+    document.getElementById("pred1h").textContent = estimates["1h"].text;
+    document.getElementById("pred6h").textContent = estimates["6h"].text;
+    document.getElementById("pred24h").textContent = estimates["24h"].text;
+
+  } catch (e) {
+    priceEl.textContent = "Fout";
+    console.error("Live prijs ophalen mislukt", e);
+  }
+}
+
+function generatePrediction(price) {
+  const delta = (Math.random() - 0.5) * 0.05 * price; // +/- 5%
+  const direction = delta > 0 ? "📈 stijging" : "📉 daling";
+  return {
+    delta,
+    text: `${direction} van €${Math.abs(delta).toFixed(2)}`
+  };
+}
+
+fetchCoins();
